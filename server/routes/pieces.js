@@ -14,4 +14,13 @@ router.get('/:id', (req, res) => {
     .then(piece=>res.send(piece))
     .catch(err=>res.send({ message: 'Error in getting one piece', err}));
 })
+
+router.post('/pieces', (req, res) => {
+    Piece.create(req.body)
+    .then(pieces => {
+        res.redirect(`/pieces/${pieces.id}`);
+    }).catch(err=>res.send(err));
+})
+
+
 module.exports = router;

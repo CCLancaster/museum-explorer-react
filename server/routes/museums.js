@@ -14,4 +14,12 @@ router.get('/:id', (req, res) => {
     .then(museum=>res.send(museum))
     .catch(err=>res.send({ message: 'Error in getting one  museum', err}));
 })
+
+router.post('/museum', (req, res) => {
+    Museum.create(req.body)
+    .then(museum => {
+        res.redirect(`/museum/${museum.id}`);
+    }).catch(err=>res.send(err));
+})
+
 module.exports = router;
