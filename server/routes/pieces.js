@@ -16,10 +16,25 @@ router.get('/:id', (req, res) => {
 })
 
 router.post('/pieces', (req, res) => {
-    Piece.create(req.body)
-    .then(pieces => {
-        res.redirect(`/pieces/${pieces.id}`);
-    }).catch(err=>res.send(err));
+    let newPiece = {
+        name: req.body.pname,
+        image: req.body.pimage,
+        museum: req.body.museum,
+        creator: {
+            name: req.body.cname,
+            image: req.body.cimage,
+            birthyear: req.body.birthyear,
+            deathyear: req.body.deathyear
+        }
+    }
+
+    Object.keys(newPiece).forEach((key) => (newPiece[key] == '') && delete newPiece[key]);
+    Object.keys(newPiece.creator).forEach((key) => (newPiece.creator[key] == '') && delete newPiece.creator[key])
+
+
+    db.Piece.create(newPiece)
+    .then(piece => res.send(piece))
+    .catch(err=>res.send('Error in creating a piece', err));
 })
 
 

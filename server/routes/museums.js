@@ -15,11 +15,14 @@ router.get('/:id', (req, res) => {
     .catch(err=>res.send({ message: 'Error in getting one  museum', err}));
 })
 
-router.post('/museum', (req, res) => {
-    Museum.create(req.body)
-    .then(museum => {
-        res.redirect(`/museum/${museum.id}`);
-    }).catch(err=>res.send(err));
+
+router.post('/', (req, res) => {
+    //remove any keys that have no value
+    Object.keys(req.body).forEach((key) => (req.body[key] == '') && delete req.body[key]);
+
+    db.Museum.create(req.body)
+    .then(museum => res.send(museum))
+    .catch(err=>res.send({ message: 'Error in creating one museum', err}));
 })
 
 module.exports = router;
